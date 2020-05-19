@@ -33,9 +33,16 @@ public class Graph {
 		dfs(vertexs[0], visited);
 		System.out.println();
 	}
+	/**
+	 * recusive private DFS function
+	 * @param vertex
+	 * @param visited
+	 */
 	private void dfs(Vertex vertex, boolean[] visited) {
+		//set current vertex as visited
 		System.out.print(vertex.getNum() + " ");
 		visited[vertex.getNum()] = true;
+		//load adjacent list
 		int[] adj = vertex.getAdjacentVertexsIndex();
 		for(int i = 0; i < vertex.getSize(); i++) {
 			if(visited[adj[i]] == false) {
@@ -43,14 +50,18 @@ public class Graph {
 			}
 		}
 	}
-	
+	/**
+	 * Queue-Based BFS
+	 */
 	public void bfs() {
+		//no vertex exists
 		if(vertexs.length == 0) {
 			return;
 		}
 		System.out.print("BFS: ");
 		boolean[] visited = new boolean[vertexs.length];
 		Arrays.fill(visited, false);
+		//queue initiation with vertex 0
 		Queue<Vertex> queue = new LinkedList<Vertex>();
 		queue.add(vertexs[0]);
 		while (!queue.isEmpty()) {
@@ -67,37 +78,46 @@ public class Graph {
 		}
 		System.out.println();
 	}
-	
+	/**
+	 * Dijkstra algorithm
+	 * @param starter : the index of start vertex
+	 */
 	public void dijkstra(int starter) {
-		int[] distance = new int[vertexs.length];
+		//initial distance array
+		int verNum = vertexs.length;
+		int[] distance = new int[verNum];
 		Arrays.fill(distance, Integer.MAX_VALUE);
-		for(int i = 0; i < distance.length; i++) {
+		for(int i = 0; i < verNum; i++) {
 			if(i == starter) {
 				distance[i] = 0;
 			}else {
+				//getWeight costs O(n)
 				int weight = vertexs[starter].getWeight(i);
 				if(weight != -1) {
 					distance[i] = weight;
 				}
 			}
 		}
-		boolean[] visited = new boolean[vertexs.length];
+		//update distance array
+		boolean[] visited = new boolean[verNum];
 		visited[starter] = true;
-		for(int itrTime = 0; itrTime < vertexs.length - 1; itrTime++) {
+		for(int itrTime = 1; itrTime < verNum; itrTime++) {
 			//find the minimum-distance vertex to starter which is not visited
 			int minIndex = 0;
 			int minDist = Integer.MAX_VALUE;
-			for(int i = 0; i < distance.length; i++) {
+			for(int i = 0; i < verNum; i++) {
 				if(visited[i] == false && distance[i] < minDist) {
 					minIndex = i;
 					minDist = distance[i];
 				}
 			}
+			//update distance array using minIndex
 			int[] adj = vertexs[minIndex].getAdjacentVertexsIndex();
-			for(int i = 0; i < adj.length; i++) {
-				int tempDist = vertexs[minIndex].getWeight(adj[i]);
-				if(tempDist != -1 && distance[adj[i]] > minDist + tempDist) {
-					distance[adj[i]] = minDist + tempDist;
+			for(int i = 0; i < vertexs[minIndex].getSize(); i++) {
+				int min2endDist = vertexs[minIndex].getWeight(adj[i]);
+				//if distance(A,B) > distance(A,min) + distance(min,B), then update
+				if(min2endDist != -1 && distance[adj[i]] > minDist + min2endDist) {
+					distance[adj[i]] = minDist + min2endDist;
 				}
 			}
 			visited[minIndex] = true;
@@ -113,8 +133,9 @@ public class Graph {
 		}
 		System.out.println();
 	}
-
-
+	/**
+	 * display all vertex
+	 */
 	public void show() {
 		for(Vertex v : vertexs) {
 			v.show();

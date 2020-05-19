@@ -48,17 +48,18 @@ public class Vertex {
 		weight[size] = theWeight;
 		size++;
 	}
+	
 	private void grow() {
 		int[] oldAdj = adjacentVertexsIndex;
-		int[] oldWei = weight;
+		int[] oldWeight = weight;
 		int[] newAdj = new int[weight.length*2];
-		int[] newWei = new int[weight.length*2];
+		int[] newWeight = new int[weight.length*2];
 		for(int i = 0; i < size; i++) {
 			newAdj[i] = oldAdj[i];
-			newWei[i] = oldWei[i];
+			newWeight[i] = oldWeight[i];
 		}
 		adjacentVertexsIndex = newAdj;
-		weight = newWei;
+		weight = newWeight;
 	}
 	
 	public void show() {
