@@ -22,6 +22,8 @@ public class BinaryHeap {
 		while (index > 1) {
 			if(value > data[index/2]) {
 				data[index] = data[index/2];
+			}else {
+				break;
 			}
 			index /= 2;
 		}
@@ -45,7 +47,7 @@ public class BinaryHeap {
 	 * delete the min value
 	 * @return
 	 */
-	public boolean deleteMin() {
+	public boolean deleteMax() {
 		if(size == 0) {
 			return false;
 		}
@@ -74,6 +76,14 @@ public class BinaryHeap {
 		}
 		data[index] = value;
 		return true;
+	}
+	
+	public int getMax() {
+		if(size == 0) {
+			return Integer.MIN_VALUE;
+		}else {
+			return (size == 0) ? Integer.MIN_VALUE : data[1];
+		}
 	}
 	/**
 	 * print all values
